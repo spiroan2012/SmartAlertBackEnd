@@ -42,7 +42,8 @@ namespace Infrastructure.Repositories
                 .Where(s => s.Category.Id == category
                         && s.Status == 0
                         && s.Coords.CalculateDistance(currentLoc, 'K') < 2
-                        && s.DateTime  >= incDateTime.AddHours(-2) && s.DateTime <= incDateTime
+                        && s.DateTime  >= incDateTime.AddHours(-2) && s.DateTime <= incDateTime && 1==1
+                        
                       )
                 .ToList();
         }
