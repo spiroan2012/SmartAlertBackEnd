@@ -37,6 +37,7 @@ namespace Infrastructure.Repositories
 
 
             return  _context.Incidents.Include(s=> s.Category)
+                .Include(s => s.Details)
                 .AsEnumerable()
 
                 .Where(s => s.Category.Id == category
@@ -52,6 +53,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.Incidents
                 .Include(s => s.Details)
+                .Include(s => s.Category)
                 .Where(s => s.Status == 0)
                 .ToListAsync();
         }

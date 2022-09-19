@@ -21,6 +21,10 @@ namespace Api.Helpers
                     .MapFrom(src => src.Details.ToList()[0].ImageUrl))
                 .ForMember(dest => dest.Latitude, opt => opt
                     .MapFrom(src => src.Coords.Y))
+                .ForMember(dest => dest.Address, opt => opt
+                    .MapFrom(src => src.Details.ToList()[0].Address))
+                .ForMember(dest => dest.Category, opt => opt
+                    .MapFrom(src => src.Category.Type))
                 .ForMember(dest => dest.Longitude, opt => opt
                     .MapFrom(src => src.Coords.X))
                 .ForMember(dest => dest.Grade, opt => opt

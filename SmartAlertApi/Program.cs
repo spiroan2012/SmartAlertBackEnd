@@ -24,12 +24,6 @@ builder.Services.AddDbContext<SmartAlertContext>(x =>
         }));
 builder.Services.AddScoped<IIncidentRepository, IncidentRepository>();
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
-//var section = configuration.GetSection("FirebaseSettings");
-//builder.Services.Configure<FirebaseSettings>(section);
-//var opt = new FirebaseSettings();
-//builder.Services.Configure<FirebaseSettings>(options => configuration.GetSection("FirebaseSettings").Bind(options));
-//var settinfs = new FirebaseSettings();
-
 
 builder.Services.AddScoped<IFirebaseService, FirebaseService>();
 builder.Services.AddScoped<ISmsService, SmsService>();

@@ -64,6 +64,8 @@ namespace SmartAlertApi.Controllers
             {
                 return BadRequest("There are more than one similar incidents");
             }
+
+
             IncidentDetail det = new IncidentDetail
             {
                 CreationDateTime = DateTime.UtcNow,
@@ -93,7 +95,12 @@ namespace SmartAlertApi.Controllers
             }
             else
             {
-               det.MasterIncident = similarIncident[0];
+                if (similarIncident[0].Details.Any(s => s.UserId == incidentDto.Uid))
+                {
+                    return BadRequest("User has already submitted the incident");
+                }
+
+                det.MasterIncident = similarIncident[0];
             }
 
             _incidentRepository.AddDetail(det);
@@ -107,8 +114,17 @@ namespace SmartAlertApi.Controllers
         public async Task<ActionResult<IEnumerable<IncidentDto>>> GetIncidents()
         {
             var incidents = await _incidentRepository.GetNewIncidents();
-
-            return Ok(_mapper.Map<List<IncidentDto>>(incidents));
+            List<IncidentDto> incidentsDtoList = _mapper.Map<List<IncidentDto>>(incidents);
+            return Ok(new IncidentResponse
+            {
+                Success = true,
+                RequestedAt = DateTime.UtcNow,
+                Results = incidentsDtoList.Count(),
+                Data = new IncidentData
+                {
+                    Incidents = incidentsDtoList.ToArray()
+                }
+            });
         }
 
         [HttpGet("GetUsers")]
