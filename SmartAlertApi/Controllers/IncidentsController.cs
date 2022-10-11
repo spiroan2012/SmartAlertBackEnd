@@ -2,6 +2,7 @@
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Elasticsearch.Net;
 using Infrastructure.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.Operation.Buffer;
 using SmartAlertApi.Dtos;
 using System.Runtime;
+using Twilio.TwiML.Messaging;
 
 namespace SmartAlertApi.Controllers
 {
@@ -43,11 +45,16 @@ namespace SmartAlertApi.Controllers
 
 
         [HttpPost("AddIncident")]
-        public async Task<ActionResult> Add(AddIncidentDto incidentDto)
+        public async Task<ActionResult<AddIncidentResponse>> Add(AddIncidentDto incidentDto)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new AddIncidentResponse
+                {
+                    Success = false,
+                    RequestedAt = DateAndTime.Now,
+                    Message = ModelState.ToString()
+                });
             }
 
             IncidentCategory category = await _categoryRepository
@@ -55,14 +62,24 @@ namespace SmartAlertApi.Controllers
 
             if (category == null)
             {
-                return BadRequest($"Coud not find category {incidentDto.Category}");
+                return BadRequest( new AddIncidentResponse
+                {
+                    Success = false,
+                    RequestedAt = DateAndTime.Now,
+                    Message = $"Coud not find category {incidentDto.Category}"
+                });
             }
 
             var similarIncident = _incidentRepository
                 .GetSimilarIncident(incidentDto.DateTime, incidentDto.Latitude, incidentDto.Longitude, category.Id);
             if (similarIncident.Count > 1)
             {
-                return BadRequest("There are more than one similar incidents");
+                return BadRequest( new AddIncidentResponse
+                {
+                    Success = false,
+                    RequestedAt = DateAndTime.Now,
+                    Message = "There are more than one similar incidents"
+                });
             }
 
 
@@ -97,7 +114,12 @@ namespace SmartAlertApi.Controllers
             {
                 if (similarIncident[0].Details.Any(s => s.UserId == incidentDto.Uid))
                 {
-                    return BadRequest("User has already submitted the incident");
+                    return BadRequest( new AddIncidentResponse
+                    {
+                        Success = false,
+                        RequestedAt = DateAndTime.Now,
+                        Message = "User has already submitted the incident"
+                    });
                 }
 
                 det.MasterIncident = similarIncident[0];
@@ -105,9 +127,21 @@ namespace SmartAlertApi.Controllers
 
             _incidentRepository.AddDetail(det);
 
-            if(await _incidentRepository.Complete()) return Ok("Successfully added incident");
+            if(await _incidentRepository.Complete())
+            return Ok( new AddIncidentResponse
+            {
+                Success = true,
+                RequestedAt = DateAndTime.Now,
+                Message = $"Incident {incidentDto.Title} added succesfully"
+            });
+            // return Ok("Successfully added incident");
 
-            return BadRequest($"Failed to add incident {incidentDto.Title}");
+            return new  AddIncidentResponse
+            {
+                Success = false,
+                RequestedAt = DateAndTime.Now,
+                Message = $"Failed to add incident {incidentDto.Title}"
+            };
         }
 
         [HttpGet]
@@ -143,16 +177,26 @@ namespace SmartAlertApi.Controllers
 
 
         [HttpPatch]
-        public async Task<ActionResult> UpdateStatus(UpdateIncidentDto updateDto)
+        public async Task<ActionResult<AddIncidentResponse>> UpdateStatus(UpdateIncidentDto updateDto)
         {
             Incident incident = await _incidentRepository.GetIncident(updateDto.IncidentId);
             if (incident == null)
             {
-                return BadRequest($"No master incident was found with id {updateDto.IncidentId}");
+                return BadRequest(new AddIncidentResponse
+                {
+                    Success = false,
+                    RequestedAt = DateTime.Now,
+                    Message = $"No master incident was found with id {updateDto.IncidentId}"
+                });
             }
             else if (incident.Status != 0)
             {
-                return BadRequest($"Incident with id {updateDto.IncidentId} has already been proccessed");
+                return BadRequest(new AddIncidentResponse
+                {
+                    Success = false,
+                    RequestedAt = DateTime.Now,
+                    Message = $"Incident with id {updateDto.IncidentId} has already been proccessed"
+                });
             }
             var users = await _firebaseService.GetAllUsers();
             Point masterPoint = IncidentUtilityClass.CreatePoint(incident.Coords.X, incident.Coords.Y);
@@ -185,9 +229,19 @@ namespace SmartAlertApi.Controllers
 
             _incidentRepository.UpdateIncidentStatus(incident, updateDto.Status);
 
-            if (await _incidentRepository.Complete()) return Ok("Incident status changed successfully");
+            if (await _incidentRepository.Complete()) return Ok(new AddIncidentResponse
+            {
+                Success = true,
+                RequestedAt = DateTime.Now,
+                Message = "Incident status changed successfully"
+            });
 
-            return BadRequest("Failed to update incident status");
+            return BadRequest(new AddIncidentResponse
+            {
+                Success = false,
+                RequestedAt = DateTime.Now,
+                Message = "Failed to update incident status"
+            });
         }
     }
 }
