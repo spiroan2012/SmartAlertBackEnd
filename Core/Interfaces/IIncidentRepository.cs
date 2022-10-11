@@ -11,6 +11,7 @@ namespace Core.Interfaces
     {
         public void AddMaster(Incident incident);
         public void AddDetail(IncidentDetail incident);
+        public int GetCountOfLaterIncidents(DateTime incDateTime, double lat, double longt, int category);
         public IReadOnlyList<Incident> GetSimilarIncident(DateTime incDateTime, double lat, double longt, int category);
         public Task<IReadOnlyList<Incident>> GetNewIncidents();
         public Task<Incident> GetIncident(int incidentId);

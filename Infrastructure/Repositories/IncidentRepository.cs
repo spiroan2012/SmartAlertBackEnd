@@ -15,7 +15,7 @@ namespace Infrastructure.Repositories
 {
     public class IncidentRepository : IIncidentRepository
     {
-        private readonly SmartAlertContext _context;
+        private readonly SmartAlertContext? _context;
 
         public IncidentRepository(SmartAlertContext context)
         {
@@ -29,6 +29,24 @@ namespace Infrastructure.Repositories
         public void AddMaster(Incident incident)
         {
             _context.Incidents.Add(incident);
+        }
+
+        public int GetCountOfLaterIncidents(DateTime incDateTime, double lat, double longt, int category)
+        {
+            Point currentLoc = IncidentUtilityClass.CreatePoint(longt, lat);
+
+
+            return _context.Incidents.Include(s => s.Category)
+                .Include(s => s.Details)
+                .AsEnumerable()
+
+                .Where(s => s.Category.Id == category
+                        && s.Status == 0
+                        && s.Coords.CalculateDistance(currentLoc, 'K') < 2
+                        && s.DateTime > incDateTime
+
+                      )
+                .Count();
         }
 
         public IReadOnlyList<Incident> GetSimilarIncident(DateTime incDateTime, double lat, double longt, int category)

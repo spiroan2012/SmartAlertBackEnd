@@ -70,6 +70,16 @@ namespace SmartAlertApi.Controllers
                 });
             }
 
+            if(_incidentRepository.GetCountOfLaterIncidents(incidentDto.DateTime, incidentDto.Latitude, incidentDto.Longitude, category.Id) != 0)
+            {
+                return BadRequest(new AddIncidentResponse
+                {
+                    Success = false,
+                    RequestedAt = DateAndTime.Now,
+                    Message = $"Cannot create incident which is from the past"
+                });
+            }
+
             var similarIncident = _incidentRepository
                 .GetSimilarIncident(incidentDto.DateTime, incidentDto.Latitude, incidentDto.Longitude, category.Id);
             if (similarIncident.Count > 1)

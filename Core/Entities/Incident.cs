@@ -18,7 +18,7 @@ namespace Core.Entities
         public int Status { get; set; }
         [Required]
         public DateTime StatusChangeDateTime{ get; set; }
-        public string StatusChangeUid { get; set; }
+        public string? StatusChangeUid { get; set; }
         //[Required]
         //[Range(-90.0, 90.0)]
         //public double Latitude { get; set; }
