@@ -1,12 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NetTopologySuite.Geometries;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Entities
 {
@@ -40,7 +34,7 @@ namespace Core.Entities
         //[Required]
         //[Range(-90.0, 90.0)]
         //public double Longitude { get; set; }
-       // [Column(TypeName = "geometry (point)")]
+        // [Column(TypeName = "geometry (point)")]
         public Point? Coords { get; set; }
         public Incident? MasterIncident { get; set; }
     }

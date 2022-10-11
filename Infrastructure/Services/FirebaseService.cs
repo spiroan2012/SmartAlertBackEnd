@@ -1,27 +1,18 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
-using FireSharp;
 using FireSharp.Config;
 using FireSharp.Interfaces;
-using FireSharp.Response;
 using Infrastructure.Utilities;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Nest;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
     public class FirebaseService : IFirebaseService
     {
-        private  IFirebaseClient _firebaseClient;
-        public FirebaseService( IConfiguration configuration)
+        private IFirebaseClient _firebaseClient;
+        public FirebaseService(IConfiguration configuration)
         {
             var options = configuration.GetSection("FirebaseSettings").Get<FirebaseSettings>();
             IFirebaseConfig conf = new FirebaseConfig
@@ -44,9 +35,9 @@ namespace Infrastructure.Services
 
             var list = new List<FirebaseUser>();
 
-            if(data != null)
+            if (data != null)
             {
-                foreach(var user in data)
+                foreach (var user in data)
                 {
                     list.Add(JsonConvert.DeserializeObject<FirebaseUser>(((JProperty)user).Value.ToString()));
                 }

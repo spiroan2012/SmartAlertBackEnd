@@ -1,6 +1,5 @@
 ﻿using NetTopologySuite.Geometries;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities
 {
@@ -17,7 +16,7 @@ namespace Core.Entities
         [Required]
         public int Status { get; set; }
         [Required]
-        public DateTime StatusChangeDateTime{ get; set; }
+        public DateTime StatusChangeDateTime { get; set; }
         public string? StatusChangeUid { get; set; }
         //[Required]
         //[Range(-90.0, 90.0)]

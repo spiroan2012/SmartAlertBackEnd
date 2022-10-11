@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core.Entities
+﻿namespace Core.Entities
 {
-    public  class FirebaseUser
+    public class FirebaseUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

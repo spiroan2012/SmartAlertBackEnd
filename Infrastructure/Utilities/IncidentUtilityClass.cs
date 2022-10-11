@@ -1,11 +1,6 @@
 ﻿using Core.Entities;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Utilities
 {
@@ -78,15 +73,15 @@ namespace Infrastructure.Utilities
             {
                 double distance = masterPoint.CalculateDistance(incidentDetail.Coords, 'K');
 
-                if(distance < 0.5)
+                if (distance < 0.5)
                 {
                     countCat1++;
                 }
-                else if(distance >= 0.5 && distance < 1)
+                else if (distance >= 0.5 && distance < 1)
                 {
                     countCat2++;
                 }
-                else if(distance < 2)
+                else if (distance < 2)
                 {
                     countCat3++;
                 }

@@ -6,7 +6,7 @@ namespace Api.Dtos
     {
         [Required]
         public int IncidentId { get; set; }
-        [Range(1,2)]
+        [Range(1, 2)]
         [Required]
         public int Status { get; set; }
         [Required]

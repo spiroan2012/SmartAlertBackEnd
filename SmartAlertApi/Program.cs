@@ -1,15 +1,10 @@
+using Api.Helpers;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using System.Configuration;
-using System.Runtime;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
-using Api.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -43,8 +38,8 @@ using (var scope = app.Services.CreateScope())
     dataContext.Database.MigrateAsync().Wait();
 }
 
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

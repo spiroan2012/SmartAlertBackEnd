@@ -2,17 +2,11 @@
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
-using Elasticsearch.Net;
 using Infrastructure.Utilities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.VisualBasic;
 using NetTopologySuite.Geometries;
-using NetTopologySuite.Operation.Buffer;
 using SmartAlertApi.Dtos;
-using System.Runtime;
-using Twilio.TwiML.Messaging;
 
 namespace SmartAlertApi.Controllers
 {
@@ -28,8 +22,8 @@ namespace SmartAlertApi.Controllers
         public IMapper _mapper { get; set; }
 
 
-        public IncidentsController(IIncidentRepository incidentRepository, 
-            ICategoriesRepository categoryRepository, 
+        public IncidentsController(IIncidentRepository incidentRepository,
+            ICategoriesRepository categoryRepository,
             IFirebaseService firebaseService,
             ISmsService smsService,
             ISmsRepository smsRepository,
@@ -62,7 +56,7 @@ namespace SmartAlertApi.Controllers
 
             if (category == null)
             {
-                return BadRequest( new AddIncidentResponse
+                return BadRequest(new AddIncidentResponse
                 {
                     Success = false,
                     RequestedAt = DateAndTime.Now,
@@ -70,7 +64,7 @@ namespace SmartAlertApi.Controllers
                 });
             }
 
-            if(_incidentRepository.GetCountOfLaterIncidents(incidentDto.DateTime, incidentDto.Latitude, incidentDto.Longitude, category.Id) != 0)
+            if (_incidentRepository.GetCountOfLaterIncidents(incidentDto.DateTime, incidentDto.Latitude, incidentDto.Longitude, category.Id) != 0)
             {
                 return BadRequest(new AddIncidentResponse
                 {
@@ -84,7 +78,7 @@ namespace SmartAlertApi.Controllers
                 .GetSimilarIncident(incidentDto.DateTime, incidentDto.Latitude, incidentDto.Longitude, category.Id);
             if (similarIncident.Count > 1)
             {
-                return BadRequest( new AddIncidentResponse
+                return BadRequest(new AddIncidentResponse
                 {
                     Success = false,
                     RequestedAt = DateAndTime.Now,
@@ -124,7 +118,7 @@ namespace SmartAlertApi.Controllers
             {
                 if (similarIncident[0].Details.Any(s => s.UserId == incidentDto.Uid))
                 {
-                    return BadRequest( new AddIncidentResponse
+                    return BadRequest(new AddIncidentResponse
                     {
                         Success = false,
                         RequestedAt = DateAndTime.Now,
@@ -137,16 +131,16 @@ namespace SmartAlertApi.Controllers
 
             _incidentRepository.AddDetail(det);
 
-            if(await _incidentRepository.Complete())
-            return Ok( new AddIncidentResponse
-            {
-                Success = true,
-                RequestedAt = DateAndTime.Now,
-                Message = $"Incident {incidentDto.Title} added succesfully"
-            });
+            if (await _incidentRepository.Complete())
+                return Ok(new AddIncidentResponse
+                {
+                    Success = true,
+                    RequestedAt = DateAndTime.Now,
+                    Message = $"Incident {incidentDto.Title} added succesfully"
+                });
             // return Ok("Successfully added incident");
 
-            return new  AddIncidentResponse
+            return new AddIncidentResponse
             {
                 Success = false,
                 RequestedAt = DateAndTime.Now,
@@ -210,7 +204,7 @@ namespace SmartAlertApi.Controllers
             }
             var users = await _firebaseService.GetAllUsers();
             Point masterPoint = IncidentUtilityClass.CreatePoint(incident.Coords.X, incident.Coords.Y);
-            if(updateDto.Status == 2)
+            if (updateDto.Status == 2)
             {
                 SmsMaster master = new SmsMaster
                 {

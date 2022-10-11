@@ -2,7 +2,6 @@
 using AutoMapper;
 using Core.Entities;
 using Infrastructure.Utilities;
-using System.Collections.Generic;
 
 namespace Api.Helpers
 {

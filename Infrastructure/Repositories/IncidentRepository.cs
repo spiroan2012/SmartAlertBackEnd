@@ -4,12 +4,6 @@ using Infrastructure.Data;
 using Infrastructure.Utilities;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Nest;
 
 namespace Infrastructure.Repositories
 {
@@ -54,15 +48,15 @@ namespace Infrastructure.Repositories
             Point currentLoc = IncidentUtilityClass.CreatePoint(longt, lat);
 
 
-            return  _context.Incidents.Include(s=> s.Category)
+            return _context.Incidents.Include(s => s.Category)
                 .Include(s => s.Details)
                 .AsEnumerable()
 
                 .Where(s => s.Category.Id == category
                         && s.Status == 0
                         && s.Coords.CalculateDistance(currentLoc, 'K') < 2
-                        && s.DateTime  >= incDateTime.AddHours(-2) && s.DateTime <= incDateTime && 1==1
-                        
+                        && s.DateTime >= incDateTime.AddHours(-2) && s.DateTime <= incDateTime && 1 == 1
+
                       )
                 .ToList();
         }
@@ -79,7 +73,7 @@ namespace Infrastructure.Repositories
         public async Task<Incident> GetIncident(int incidentId)
         {
             return await _context.Incidents
-                .Include(s=> s.Category)
+                .Include(s => s.Category)
                 .FirstOrDefaultAsync(s => s.Id == incidentId);
         }
 
