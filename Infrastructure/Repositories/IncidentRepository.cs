@@ -65,10 +65,11 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(s => s.Id == incidentId);
         }
 
-        public void UpdateIncidentStatus(Incident incident, int status)
+        public void UpdateIncidentStatus(Incident incident, int status, string uid)
         {
             incident.Status = status;
             incident.StatusChangeDateTime = DateTime.UtcNow;
+            incident.StatusChangeUid = uid;
         }
 
         public async Task<bool> Complete()

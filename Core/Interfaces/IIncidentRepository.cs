@@ -14,7 +14,7 @@ namespace Core.Interfaces
         public IReadOnlyList<Incident> GetSimilarIncident(DateTime incDateTime, double lat, double longt, int category);
         public Task<IReadOnlyList<Incident>> GetNewIncidents();
         public Task<Incident> GetIncident(int incidentId);
-        public void UpdateIncidentStatus(Incident incident, int status);
+        public void UpdateIncidentStatus(Incident incident, int status, string uid);
         public Task<bool> Complete();
     }
 }
