@@ -13,6 +13,8 @@ namespace Api.Helpers
             CreateMap<Incident, IncidentDto>()
                 .ForMember(dest => dest.IncidentCount, opt => opt
                     .MapFrom(src => src.Details.Count))
+                .ForMember(dest => dest.CreationDateTime, opt => opt
+                    .MapFrom(dest => dest.CreationDateTime))
                 .ForMember(dest => dest.Title, opt => opt
                     .MapFrom(src => src.Details.ToList()[0].Title))
                 .ForMember(dest => dest.Description, opt => opt
