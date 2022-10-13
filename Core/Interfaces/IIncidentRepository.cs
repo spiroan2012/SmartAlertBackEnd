@@ -11,6 +11,7 @@ namespace Core.Interfaces
         public Task<IReadOnlyList<Incident>> GetNewIncidents();
         public Task<Incident> GetIncident(int incidentId);
         public void UpdateIncidentStatus(Incident incident, int status, string uid);
+        public void UpdateIncidentDetailsStatus(IncidentDetail[] Details, string uid);
         public Task<bool> Complete();
     }
 }

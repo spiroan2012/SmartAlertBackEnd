@@ -232,6 +232,7 @@ namespace SmartAlertApi.Controllers
             }
 
             _incidentRepository.UpdateIncidentStatus(incident, updateDto.Status, updateDto.Uid);
+            _incidentRepository.UpdateIncidentDetailsStatus(incident.Details.ToArray(), updateDto.Uid);
 
             if (await _incidentRepository.Complete()) return Ok(new AddIncidentResponse
             {

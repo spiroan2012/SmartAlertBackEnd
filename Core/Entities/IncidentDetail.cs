@@ -22,6 +22,7 @@ namespace Core.Entities
         public IncidentCategory? Category { get; set; }
         [Required]
         public DateTime StatusChangeDateTime { get; set; }
+        public string? StatusChangeUid { get; set; }
         [Required]
         public string? UserId { get; set; }
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Email not valid")]

@@ -74,6 +74,7 @@ namespace Infrastructure.Repositories
         {
             return await _context.Incidents
                 .Include(s => s.Category)
+                .Include(s => s.Details)
                 .FirstOrDefaultAsync(s => s.Id == incidentId);
         }
 
@@ -84,9 +85,24 @@ namespace Infrastructure.Repositories
             incident.StatusChangeUid = uid;
         }
 
+        public void UpdateIncidentDetailsStatus(IncidentDetail[] Details, string uid)
+        {
+            for(int i = 0;i < Details.Length; i++)
+            {
+                Details[i].StatusChangeUid = uid;
+                Details[i].StatusChangeDateTime = DateTime.UtcNow;
+            }
+        }
+
         public async Task<bool> Complete()
         {
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<int> GetNumberOfIncidentsReportedForUser(string uid)
+        {
+            return _context.IncidentDetails
+                .Count(s => s.UserId == uid);
         }
     }
 }
