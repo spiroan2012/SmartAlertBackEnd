@@ -213,16 +213,17 @@ namespace SmartAlertApi.Controllers
                 };
 
                 _smsRepository.AddSmsMaster(master);
-                foreach (var user in users)
+                foreach (KeyValuePair<string, FirebaseUser> user in users)
                 {
-                    Point userPoint = IncidentUtilityClass.CreatePoint(user.Longitude, user.Latitude);
+                    Point userPoint = IncidentUtilityClass.CreatePoint(user.Value.Longitude, user.Value.Latitude);
                     if (masterPoint.CalculateDistance(userPoint, 'K') <= 2)
                     {
                         //await _smsService.SendSms($"+30{user.MobilePhone}", incident.Category.SmsText);
 
                         SmsDetail detail = new SmsDetail
                         {
-                            MobilePhone = user.MobilePhone,
+                            MobilePhone = user.Value.MobilePhone,
+                            Uid= user.Key,
                             SmsMaster = master
                         };
 

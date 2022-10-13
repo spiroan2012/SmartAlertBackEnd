@@ -2,6 +2,7 @@
 using Core.Interfaces;
 using FireSharp.Config;
 using FireSharp.Interfaces;
+using FireSharp.Response;
 using Infrastructure.Utilities;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -25,25 +26,26 @@ namespace Infrastructure.Services
 
         }
 
-        public async Task<IReadOnlyList<FirebaseUser>> GetAllUsers()
+        public async Task<Dictionary<string, FirebaseUser>> GetAllUsers()
         {
 
 
-            var response = await _firebaseClient.GetAsync("Users");
+            FirebaseResponse response = await _firebaseClient.GetAsync("Users");
+            Dictionary<string, FirebaseUser> users = response.ResultAs<Dictionary<string, FirebaseUser>>();
+            return users;
+            //dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
 
-            dynamic data = JsonConvert.DeserializeObject<dynamic>(response.Body);
+            //var list = new List<FirebaseUser>();
 
-            var list = new List<FirebaseUser>();
+            //if (data != null)
+            //{
+            //    foreach (var user in data)
+            //    {
+            //        list.Add(JsonConvert.DeserializeObject<FirebaseUser>(((JProperty)user).Value.ToString()));
+            //    }
+            //}
 
-            if (data != null)
-            {
-                foreach (var user in data)
-                {
-                    list.Add(JsonConvert.DeserializeObject<FirebaseUser>(((JProperty)user).Value.ToString()));
-                }
-            }
-
-            return list;
+            //return list;
         }
     }
 }

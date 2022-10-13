@@ -5,6 +5,6 @@ namespace Core.Interfaces
 {
     public interface IFirebaseService
     {
-        public Task<IReadOnlyList<FirebaseUser>> GetAllUsers();
+        public Task<Dictionary<string, FirebaseUser>> GetAllUsers();
     }
 }

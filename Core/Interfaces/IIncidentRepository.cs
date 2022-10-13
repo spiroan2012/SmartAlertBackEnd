@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Interfaces
 {
@@ -12,6 +13,9 @@ namespace Core.Interfaces
         public Task<Incident> GetIncident(int incidentId);
         public void UpdateIncidentStatus(Incident incident, int status, string uid);
         public void UpdateIncidentDetailsStatus(IncidentDetail[] Details, string uid);
+        public int GetCountReportIncidents(Func<Incident, bool> condition);
+        public int GetCountReportIncidentsNoParams();
+        public int GetCountReportIncidentDetails(Func<IncidentDetail, bool> condition);
         public Task<bool> Complete();
     }
 }

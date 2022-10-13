@@ -9,5 +9,6 @@ namespace Core.Entities
         public SmsMaster? SmsMaster { get; set; }
         [Required]
         public string? MobilePhone { get; set; }
+        public string? Uid { get; set; }
     }
 }

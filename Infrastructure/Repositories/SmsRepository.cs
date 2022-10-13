@@ -28,5 +28,9 @@ namespace Infrastructure.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
+        public int GetCountReporSmsDetails(Func<SmsDetail, bool> condition) =>
+                    _context.SmsDetails
+                    .Count(condition);
+
     }
 }

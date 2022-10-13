@@ -4,6 +4,8 @@ using Infrastructure.Data;
 using Infrastructure.Utilities;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
+using System;
+using System.Linq;
 
 namespace Infrastructure.Repositories
 {
@@ -17,12 +19,12 @@ namespace Infrastructure.Repositories
         }
         public void AddDetail(IncidentDetail incidentDet)
         {
-            _context.IncidentDetails.Add(incidentDet);
+            _context?.IncidentDetails?.Add(incidentDet);
         }
 
         public void AddMaster(Incident incident)
         {
-            _context.Incidents.Add(incident);
+            _context?.Incidents?.Add(incident);
         }
 
         public int GetCountOfLaterIncidents(DateTime incDateTime, double lat, double longt, int category)
@@ -99,10 +101,15 @@ namespace Infrastructure.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<int> GetNumberOfIncidentsReportedForUser(string uid)
-        {
-            return _context.IncidentDetails
-                .Count(s => s.UserId == uid);
-        }
+        public int GetCountReportIncidentDetails(Func<IncidentDetail, bool> condition) =>   
+                _context.IncidentDetails
+                .Include(s => s.MasterIncident)
+                .Count(condition);
+
+        public int GetCountReportIncidents(Func<Incident, bool> condition) =>
+            _context.Incidents
+                .Count(condition);
+
+        public int GetCountReportIncidentsNoParams() => _context.Incidents.Count();
     }
 }

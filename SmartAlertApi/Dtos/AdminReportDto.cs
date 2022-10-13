@@ -6,6 +6,6 @@
         public int NumberOfIncidentsAccepted { get; set; }
         public int NumberOfIncidentsRejected { get; set; }
         public int NumberOfIncidentsPending { get; set; }
-        public int NumberOfUsersNotified { get; set; }
+        public int TotalOfIncidentsSubmited { get; set; }
     }
 }
