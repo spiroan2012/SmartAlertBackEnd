@@ -5,8 +5,6 @@ using FireSharp.Interfaces;
 using FireSharp.Response;
 using Infrastructure.Utilities;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Infrastructure.Services
 {

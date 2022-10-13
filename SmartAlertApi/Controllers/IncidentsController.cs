@@ -223,7 +223,7 @@ namespace SmartAlertApi.Controllers
                         SmsDetail detail = new SmsDetail
                         {
                             MobilePhone = user.Value.MobilePhone,
-                            Uid= user.Key,
+                            Uid = user.Key,
                             SmsMaster = master
                         };
 

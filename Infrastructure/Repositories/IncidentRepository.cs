@@ -4,8 +4,6 @@ using Infrastructure.Data;
 using Infrastructure.Utilities;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
-using System;
-using System.Linq;
 
 namespace Infrastructure.Repositories
 {
@@ -89,7 +87,7 @@ namespace Infrastructure.Repositories
 
         public void UpdateIncidentDetailsStatus(IncidentDetail[] Details, string uid)
         {
-            for(int i = 0;i < Details.Length; i++)
+            for (int i = 0; i < Details.Length; i++)
             {
                 Details[i].StatusChangeUid = uid;
                 Details[i].StatusChangeDateTime = DateTime.UtcNow;
@@ -101,7 +99,7 @@ namespace Infrastructure.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public int GetCountReportIncidentDetails(Func<IncidentDetail, bool> condition) =>   
+        public int GetCountReportIncidentDetails(Func<IncidentDetail, bool> condition) =>
                 _context.IncidentDetails
                 .Include(s => s.MasterIncident)
                 .Count(condition);
