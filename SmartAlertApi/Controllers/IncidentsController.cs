@@ -149,7 +149,7 @@ namespace SmartAlertApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<IncidentDto>>> GetIncidents()
+        public async Task<ActionResult<IEnumerable<IncidentResponse>>> GetIncidents()
         {
             var incidents = await _incidentRepository.GetNewIncidents();
             List<IncidentDto> incidentsDtoList = _mapper.Map<List<IncidentDto>>(incidents);
@@ -223,7 +223,7 @@ namespace SmartAlertApi.Controllers
                         SmsDetail detail = new SmsDetail
                         {
                             MobilePhone = user.Value.MobilePhone,
-                            Uid = user.Key,
+                            Uid= user.Key,
                             SmsMaster = master
                         };
 

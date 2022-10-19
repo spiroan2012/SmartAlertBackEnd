@@ -1,5 +1,6 @@
 ﻿using Api.Dtos;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -18,7 +19,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("User")]
-        public ActionResult<UserReportResponse> GetStatisticsForUser([FromQuery] string uid)
+        public ActionResult<UserReportResponse> GetStatisticsForUser([FromQuery]string uid)
         {
             return Ok(new UserReportResponse
             {

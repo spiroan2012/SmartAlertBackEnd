@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Interfaces
 {
