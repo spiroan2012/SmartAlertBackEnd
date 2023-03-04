@@ -53,7 +53,7 @@ namespace SmartAlertApi.Controllers
 
             IncidentCategory category = await _categoryRepository
                 .GetTypeIdByTitle(incidentDto.Category);
-
+            //xaxaxaxxax
             if (category == null)
             {
                 return BadRequest(new AddIncidentResponse
