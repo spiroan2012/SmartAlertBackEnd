@@ -11,7 +11,7 @@
     public class IncidentData
     {
         public IncidentDto[] Incidents { get; set; }
-        public int MyProperty { get; set; }
+        public int MyProperty { get; set; } 
     }
 
 }
